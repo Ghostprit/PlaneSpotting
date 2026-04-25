@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Planespotting</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <style>#map { height: 100vh; width: 100%; }</style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var map = L.map('map', {
+                center: [55.6, 24.8], 
+                zoom: 8,              
+                minZoom: 8,           
+                maxZoom: 12,          
+                maxBounds: [[53.8, 20.9], [56.5, 26.9]],
+                maxBoundsViscosity: 1.0
+            });
+
+            var iconLayer = L.layerGroup().addTo(map);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            var planeIcon = L.icon({
+                iconUrl: 'https://unpkg.com/lucide-static@latest/icons/plane.svg', 
+                iconSize: [30, 30], 
+                iconAnchor: [15, 15], 
+                popupAnchor: [0, -15]
+            });
+
+            function plotFlights(flightArray, isMockData = false) {
+                iconLayer.clearLayers();
+
+                flightArray.forEach(flight => {
+                    if(flight[5] && flight[6]) {
+                        // Use the custom planeIcon here
+                        L.marker([flight[6], flight[5]], { icon: planeIcon }).addTo(iconLayer)
+                        .bindPopup(`<b>Callsign:</b> ${flight[1].trim()} <br>
+                        <b>Origin country:</b> ${flight[2]} <br>
+                        <b>Altitude:</b> ${flight[7] ? flight[7] + ' m' : 'On Ground'} <br>
+                        <b>Velocity:</b> ${flight[9] ? flight[9] + ' m/s' : 'N/A'}`);
+                    }
+                });
+            }
+
+            function updateFlights() {
+                fetch('/api/flights')
+                    .then(response => response.json())
+                    .then(data => {
+                            plotFlights(data.states);
+                    });
+            }
+
+            updateFlights();
+
+            setInterval(updateFlights, 30000);
+
+        </script>
+    </body>
+</html>
