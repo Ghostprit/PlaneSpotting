@@ -10,11 +10,8 @@ def home():
 @app.route('/api/flights')
 def get_flights():
     url = 'https://opensky-network.org/api/states/all?lamin=53.8&lomin=20.9&lamax=56.5&lomax=26.9'
-    # try:
     response = requests.get(url, timeout=5)
     return jsonify(response.json())
-    # except Exception as e:
-    #     return jsonify({"states": None, "error": str(e)})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)

@@ -32,12 +32,16 @@
                 popupAnchor: [0, -15]
             });
 
-            function plotFlights(flightArray, isMockData = false) {
-                iconLayer.clearLayers();
+            const dummyFlights = [
+            [null, "Flight 1", "Germany", null, null, 25.00, 54.00],
+            [null, "Flight 2", "France", null, null, 23.00, 55.00],
+            [null, "Flight 3", "Italy", null, null, 24.00, 56.00]
+            ];
 
+            function plotFlights(flightArray) {
+                iconLayer.clearLayers();
                 flightArray.forEach(flight => {
                     if(flight[5] && flight[6]) {
-                        // Use the custom planeIcon here
                         L.marker([flight[6], flight[5]], { icon: planeIcon }).addTo(iconLayer)
                         .bindPopup(`<b>Callsign:</b> ${flight[1].trim()} <br>
                         <b>Origin country:</b> ${flight[2]} <br>
@@ -47,11 +51,17 @@
                 });
             }
 
+
+
             function updateFlights() {
                 fetch('/api/flights')
                     .then(response => response.json())
                     .then(data => {
+                        if(data.states) {
                             plotFlights(data.states);
+                        } else {
+                            plotFlights(dummyFlights);
+                        }
                     });
             }
 
