@@ -55,13 +55,21 @@
 
             function updateFlights() {
                 fetch('/api/flights')
-                    .then(response => response.json())
+                    .then(response => {
+                        if(!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json()
+                    })
                     .then(data => {
                         if(data.states && data.states.length > 0) {
                             plotFlights(data.states);
                         } else {
                             plotFlights(dummyFlights);
                         }
+                    })
+                    .catch(error => {
+                        plotFlights(dummyFlights, true);
                     });
             }
 
