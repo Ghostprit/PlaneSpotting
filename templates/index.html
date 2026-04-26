@@ -57,7 +57,7 @@
                 fetch('/api/flights')
                     .then(response => response.json())
                     .then(data => {
-                        if(data.states) {
+                        if(data.states && data.states.length > 0) {
                             plotFlights(data.states);
                         } else {
                             plotFlights(dummyFlights);
