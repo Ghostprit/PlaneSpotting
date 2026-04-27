@@ -10,7 +10,7 @@
     <body>
         <div id="map"></div>
         <script>
-            var map = L.map('map', {
+            var map = L.map("map", {
                 center: [55.6, 24.8], 
                 zoom: 8,              
                 minZoom: 8,           
@@ -21,12 +21,12 @@
 
             var iconLayer = L.layerGroup().addTo(map);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "&copy; OpenStreetMap contributors"
             }).addTo(map);
 
             var planeIcon = L.icon({
-                iconUrl: 'https://unpkg.com/lucide-static@latest/icons/plane.svg', 
+                iconUrl: "https://unpkg.com/lucide-static@latest/icons/plane.svg", 
                 iconSize: [30, 30], 
                 iconAnchor: [15, 15], 
                 popupAnchor: [0, -15]
@@ -45,8 +45,8 @@
                         L.marker([flight[6], flight[5]], { icon: planeIcon }).addTo(iconLayer)
                         .bindPopup(`<b>Callsign:</b> ${flight[1].trim()} <br>
                         <b>Origin country:</b> ${flight[2]} <br>
-                        <b>Altitude:</b> ${flight[7] ? flight[7] + ' m' : 'On Ground'} <br>
-                        <b>Velocity:</b> ${flight[9] ? flight[9] + ' m/s' : 'N/A'}`);
+                        <b>Altitude:</b> ${flight[7] ? flight[7] + " m" : "On Ground"} <br>
+                        <b>Velocity:</b> ${flight[9] ? flight[9] + " m/s" : "N/A"}`);
                     }
                 });
             }
@@ -54,10 +54,10 @@
 
 
             function updateFlights() {
-                fetch('/api/flights')
+                fetch("/api/flights")
                     .then(response => {
                         if(!response.ok) {
-                            throw new Error('Network response was not ok');
+                            throw new Error("Network response was not ok");
                         }
                         return response.json()
                     })
