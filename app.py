@@ -3,17 +3,17 @@ import requests
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template("index.html")
 
-@app.route('/health')
+@app.route("/health")
 def health():
-    return '', 200
+    return "OK", 200
 
-@app.route('/api/flights')
+@app.route("/api/flights")
 def get_flights():
-    url = 'https://opensky-network.org/api/states/all?lamin=53.8&lomin=20.9&lamax=56.5&lomax=26.9'
+    url = "https://opensky-network.org/api/states/all?lamin=53.8&lomin=20.9&lamax=56.5&lomax=26.9"
     response = requests.get(url, timeout=5)
     return jsonify(response.json())
 
