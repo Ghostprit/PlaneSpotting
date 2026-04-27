@@ -7,6 +7,10 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
+@app.route('/health')
+def health():
+    return '', 200
+
 @app.route('/api/flights')
 def get_flights():
     url = 'https://opensky-network.org/api/states/all?lamin=53.8&lomin=20.9&lamax=56.5&lomax=26.9'
